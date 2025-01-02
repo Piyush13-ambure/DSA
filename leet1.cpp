@@ -1,4 +1,3 @@
-//Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.You may assume that each input would have exactly one solution, and you may not use the same element twice.You can return the answer in any order. in cpp
 #include <iostream>
 using namespace std;
 
@@ -15,7 +14,7 @@ void twoSum(int nums[], int size, int target) {
 }
 
 int main() {
-    int size, target;
+    int size;
 
     // Take array size as input
     cout << "Enter the size of the array: ";
@@ -29,12 +28,34 @@ int main() {
         cin >> nums[i];
     }
 
-    // Take target as input
-    cout << "Enter the target value: ";
-    cin >> target;
+    while (true) {
+        int choice, target;
 
-    // Find and print indices
-    twoSum(nums, size, target);
+        // Display menu
+        cout << "\nMenu:\n";
+        cout << "1. Find new target\n";
+        cout << "2. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                // Take target as input
+                cout << "Enter the target value: ";
+                cin >> target;
+
+                // Find and print indices
+                twoSum(nums, size, target);
+                break;
+
+            case 2:
+                cout << "Exiting the program." << endl;
+                return 0;
+
+            default:
+                cout << "Invalid choice. Please try again." << endl;
+        }
+    }
 
     return 0;
 }
