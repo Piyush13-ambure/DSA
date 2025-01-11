@@ -1,0 +1,63 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    // Function to find the smallest positive missing number
+    int findSmallestMissing(vector<int>& arr) {
+        int n = arr.size();
+
+        // Step 1: Segregate positive numbers and non-positive numbers
+        int j = 0; // Index to place positive numbers
+        for (int i = 0; i < n; ++i) {
+            if (arr[i] <= 0) {
+                swap(arr[i], arr[j]);
+                j++;
+            }
+        }
+
+        // Step 2: Work only on the positive part of the array
+        vector<int> positivePart(arr.begin() + j, arr.end());
+        int positiveSize = positivePart.size();
+
+        // Step 3: Use the index as a marker to indicate presence
+        for (int i = 0; i < positiveSize; ++i) {
+            int absVal = abs(positivePart[i]);
+            if (absVal - 1 < positiveSize && positivePart[absVal - 1] > 0) {
+                positivePart[absVal - 1] = -positivePart[absVal - 1];
+            }
+        }
+
+        // Step 4: Find the first index with a positive value
+        for (int i = 0; i < positiveSize; ++i) {
+            if (positivePart[i] > 0) {
+                return i + 1; // Return the missing number
+            }
+        }
+
+        // If all positive numbers from 1 to positiveSize are present
+        return positiveSize + 1;
+    }
+};
+
+int main() {
+    int n;
+    cout << "Enter the number of elements in the array: ";
+    cin >> n;
+
+    vector<int> arr(n);
+    cout << "Enter the elements of the array: ";
+    for (int i = 0; i < n; ++i) {
+        cin >> arr[i];
+    }
+
+    // Create a Solution object and call findSmallestMissing
+    Solution sol;
+    int result = sol.findSmallestMissing(arr);
+
+    // Output the result
+    cout << "The smallest positive missing number is: " << result << endl;
+
+    return 0;
+}
