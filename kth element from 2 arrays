@@ -1,0 +1,58 @@
+#include <vector>
+#include <algorithm>
+#include <iostream>
+using namespace std;
+
+class Solution {
+public:
+    // Function to find the kth element in the combined sorted array
+    int kthElement(vector<int>& a, vector<int>& b, int k) {
+        int n = a.size();
+        int m = b.size();
+
+        // Ensure that 'a' is the smaller array to reduce complexity
+        if (n > m) {
+            return kthElement(b, a, k);
+        }
+
+        int left = max(0, k - m), right = min(k, n);
+
+        while (left <= right) {
+            int cutA = (left + right) / 2;
+            int cutB = k - cutA;
+
+            int leftA = (cutA > 0) ? a[cutA - 1] : INT_MIN;
+            int leftB = (cutB > 0) ? b[cutB - 1] : INT_MIN;
+            int rightA = (cutA < n) ? a[cutA] : INT_MAX;
+            int rightB = (cutB < m) ? b[cutB] : INT_MAX;
+
+            if (leftA <= rightB && leftB <= rightA) {
+                return max(leftA, leftB);
+            } else if (leftA > rightB) {
+                right = cutA - 1;
+            } else {
+                left = cutA + 1;
+            }
+        }
+
+        return -1; // This line should never be reached
+    }
+};
+
+int main() {
+    // Example arrays
+    vector<int> a = {2, 3, 6, 7, 9};
+    vector<int> b = {1, 4, 8, 10};
+    int k = 5;
+
+    // Create a Solution object
+    Solution sol;
+
+    // Find the kth element
+    int result = sol.kthElement(a, b, k);
+
+    // Print the result
+    cout << "The " << k << "th element in the combined sorted array is: " << result << endl;
+
+    return 0;
+}
