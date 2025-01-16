@@ -1,0 +1,34 @@
+//Given an array arr[] and an integer target, determine if there exists a triplet in the array whose sum equals the given target.
+
+//Return true if such a triplet exists, otherwise, return false. with the structure class Solution {#include <vector>
+#include <algorithm>
+using namespace std;
+
+class Solution {
+public:
+    bool hasTripletSum(vector<int> &arr, int target) {
+        // Step 1: Sort the array
+        sort(arr.begin(), arr.end());
+
+        int n = arr.size();
+        // Step 2: Iterate through the array
+        for (int i = 0; i < n - 2; i++) {
+            int left = i + 1;
+            int right = n - 1;
+
+            // Step 3: Use two pointers to find the required pair
+            while (left < right) {
+                int currentSum = arr[i] + arr[left] + arr[right];
+                if (currentSum == target) {
+                    return true; // Triplet found
+                } else if (currentSum < target) {
+                    left++; // Move left pointer to increase the sum
+                } else {
+                    right--; // Move right pointer to decrease the sum
+                }
+            }
+        }
+
+        return false; // No triplet found
+    }
+};
