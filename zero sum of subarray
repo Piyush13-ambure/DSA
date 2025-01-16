@@ -1,0 +1,32 @@
+#include <vector>
+#include <unordered_map>
+using namespace std;
+
+class Solution {
+public:
+    int findSubarray(vector<int> &arr) {
+        unordered_map<int, int> prefixSumFreq; // To store the frequency of prefix sums
+        int prefixSum = 0; // Initialize the prefix sum
+        int count = 0; // To count subarrays with sum = 0
+
+        // Iterate through the array
+        for (int num : arr) {
+            prefixSum += num; // Update the prefix sum
+
+            // Check if prefixSum is 0 (subarray from start to current index)
+            if (prefixSum == 0) {
+                count++;
+            }
+
+            // Check if prefixSum has been seen before
+            if (prefixSumFreq.find(prefixSum) != prefixSumFreq.end()) {
+                count += prefixSumFreq[prefixSum]; // Add the frequency of the current prefixSum
+            }
+
+            // Update the frequency of the current prefixSum
+            prefixSumFreq[prefixSum]++;
+        }
+
+        return count;
+    }
+};
