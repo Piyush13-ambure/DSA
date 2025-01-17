@@ -1,0 +1,21 @@
+The cost of stock on each day is given in an array price[]. Each day you may decide to either buy or sell the stock i at price[i], you can even buy and sell the stock on the same day. Find the maximum profit that you can get
+
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    int maximumProfit(vector<int> &prices) {
+        int n = prices.size();
+        int maxProfit = 0;
+
+        for (int i = 1; i < n; i++) {
+            // If today's price is higher than yesterday's, sell the stock
+            if (prices[i] > prices[i - 1]) {
+                maxProfit += prices[i] - prices[i - 1];
+            }
+        }
+
+        return maxProfit;
+    }
+};
