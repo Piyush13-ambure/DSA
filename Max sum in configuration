@@ -1,0 +1,29 @@
+Given an integer array(0-based indexing) arr[]. Find the maximum value of the sum of i*arr[i] for all 0 <= i <= arr.size()-1, where arr[i] is the element at index i in the arr[]. The only operation allowed is to rotate(clockwise or counterclockwise) the array any number of times
+#include<iostream>
+#include<vector>
+using namespace std;
+
+
+class Solution {
+public:
+    int maxSum(vector<int> &arr) {
+        int n = arr.size();
+        int sum = 0, current_sum = 0;
+
+        // Calculate the total sum and the initial current_sum
+        for (int i = 0; i < n; i++) {
+            sum += arr[i];
+            current_sum += i * arr[i];
+        }
+
+        int max_sum = current_sum;
+
+        // Calculate the sum for other rotations
+        for (int i = 1; i < n; i++) {
+            current_sum = current_sum + sum - n * arr[n - i];
+            max_sum = max(max_sum, current_sum);
+        }
+
+        return max_sum;
+    }
+};
