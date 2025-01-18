@@ -1,0 +1,64 @@
+//Given two strings s1 and s2. Return the minimum number of operations required to convert s1 to s2.
+//The possible operations are permitted:
+//Insert a character at any position of the string.
+//Remove any character from the string.
+//Replace any character from the string with any other characters
+
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+    // Function to compute the edit distance between two strings
+    int editDistance(string& s1, string& s2) {
+        int m = s1.size();
+        int n = s2.size();
+
+        // Create a DP table to store the edit distance between substrings
+        vector<vector<int>> dp(m + 1, vector<int>(n + 1, 0));
+
+        // Fill the DP table
+        for (int i = 0; i <= m; i++) {
+            for (int j = 0; j <= n; j++) {
+                if (i == 0) {
+                    // If s1 is empty, all characters of s2 need to be inserted
+                    dp[i][j] = j;
+                } else if (j == 0) {
+                    // If s2 is empty, all characters of s1 need to be removed
+                    dp[i][j] = i;
+                } else if (s1[i - 1] == s2[j - 1]) {
+                    // If characters match, no operation needed
+                    dp[i][j] = dp[i - 1][j - 1];
+                } else {
+                    // Take the minimum of insert, remove, and replace operations
+                    dp[i][j] = 1 + min({dp[i - 1][j],    // Remove
+                                        dp[i][j - 1],    // Insert
+                                        dp[i - 1][j - 1] // Replace
+                                       });
+                }
+            }
+        }
+
+        // Return the edit distance between the two strings
+        return dp[m][n];
+    }
+};
+
+// Main function to test the Solution class
+int main() {
+    string s1, s2;
+    cout << "Enter first string: ";
+    cin >> s1;
+    cout << "Enter second string: ";
+    cin >> s2;
+
+    Solution solution;
+    int result = solution.editDistance(s1, s2);
+
+    cout << "The minimum number of operations required to convert \"" 
+         << s1 << "\" to \"" << s2 << "\" is: " << result << endl;
+
+    return 0;
+}
