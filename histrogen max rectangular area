@@ -1,0 +1,57 @@
+//You are given a histogram represented by an array arr, where each element of the array denotes the height of the bars in the histogram. All bars have the same width of 1 unit.
+//Your task is to find the largest rectangular area possible in the given histogram, where the rectangle can be formed using a number of contiguous bars#include <iostream>
+#include <vector>
+#include <stack>
+using namespace std;
+
+class Solution {
+public:
+    // Function to find the largest rectangular area possible in a given histogram
+    int getMaxArea(vector<int>& arr) {
+        int n = arr.size();
+        stack<int> s; // Stack to store indices of histogram bars
+        int maxArea = 0; // Initialize max area
+
+        for (int i = 0; i < n; i++) {
+            // While the current bar is smaller than the bar at the top of the stack
+            while (!s.empty() && arr[s.top()] > arr[i]) {
+                int height = arr[s.top()]; // Height of the top bar
+                s.pop();
+                int width = s.empty() ? i : (i - s.top() - 1); // Width of the rectangle
+                maxArea = max(maxArea, height * width);
+            }
+            // Push current index to stack
+            s.push(i);
+        }
+
+        // Compute area for remaining bars in the stack
+        while (!s.empty()) {
+            int height = arr[s.top()];
+            s.pop();
+            int width = s.empty() ? n : (n - s.top() - 1);
+            maxArea = max(maxArea, height * width);
+        }
+
+        return maxArea;
+    }
+};
+
+// Main function to test the Solution class
+int main() {
+    int n;
+    cout << "Enter the number of bars in the histogram: ";
+    cin >> n;
+
+    vector<int> arr(n);
+    cout << "Enter the heights of the bars: ";
+    for (int i = 0; i < n; i++) {
+        cin >> arr[i];
+    }
+
+    Solution solution;
+    int result = solution.getMaxArea(arr);
+
+    cout << "The largest rectangular area in the histogram is: " << result << endl;
+
+    return 0;
+}
