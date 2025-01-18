@@ -1,0 +1,52 @@
+//You are given an array arr, you need to find any three elements in it such that arr[i] < arr[j] < arr[k] and i < j < k.
+
+//#Note:
+
+//#The output will be 1 if the subsequence returned by the function is present in the array arr
+//#If the subsequence is not present in the array then return an empty array, the driver code will print 0.
+//#If the subsequence returned by the function is not in the format as mentioned then the output will be -1.#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class Solution {
+public:
+    // Function to rotate an array by d elements in counter-clockwise direction.
+    void rotateArr(vector<int>& arr, int d) {
+        int n = arr.size();
+        d = d % n; // Handle cases where d >= n
+        if (d == 0) return; // No need to rotate if d is 0 or a multiple of n
+
+        // Step 1: Reverse the first d elements
+        reverse(arr.begin(), arr.begin() + d);
+
+        // Step 2: Reverse the remaining n-d elements
+        reverse(arr.begin() + d, arr.end());
+
+        // Step 3: Reverse the entire array
+        reverse(arr.begin(), arr.end());
+    }
+};
+
+// Main function for testing
+int main() {
+    Solution solution;
+    vector<int> arr = {1, 2, 3, 4, 5, 6, 7};
+    int d = 2;
+
+    cout << "Original array: ";
+    for (int num : arr) {
+        cout << num << " ";
+    }
+    cout << endl;
+
+    solution.rotateArr(arr, d);
+
+    cout << "Rotated array: ";
+    for (int num : arr) {
+        cout << num << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
