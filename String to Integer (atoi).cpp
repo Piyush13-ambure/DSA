@@ -12,38 +12,50 @@ using namespace std;
 
 class Solution {
 public:
-    int tupleSameProduct(vector<int>& nums) {
-        unordered_map<int, int> productCount;
-        int n = nums.size(), result = 0;
-
-        // Store frequency of all possible products
-        for (int i = 0; i < n; i++) {
-            for (int j = i + 1; j < n; j++) {
-                int product = nums[i] * nums[j];
-                productCount[product]++;
+    int myAtoi(string s) {
+        int i = 0;
+        int n = s.size();
+        long long result = 0;
+        int sign = 1;
+        
+        // Step 1: Ignore leading whitespaces
+        while (i < n && s[i] == ' ') {
+            i++;
+        }
+        
+        // Step 2: Handle optional sign
+        if (i < n && (s[i] == '+' || s[i] == '-')) {
+            sign = (s[i] == '-') ? -1 : 1;
+            i++;
+        }
+        
+        // Step 3: Convert the digits
+        while (i < n && isdigit(s[i])) {
+            result = result * 10 + (s[i] - '0');
+            i++;
+            
+            // Step 4: Handle overflow
+            if (result * sign > INT_MAX) {
+                return INT_MAX;
+            }
+            if (result * sign < INT_MIN) {
+                return INT_MIN;
             }
         }
-
-        // Count valid tuples
-        for (auto& it : productCount) {
-            int count = it.second;
-            if (count > 1) {
-                result += (count * (count - 1) / 2) * 8;
-            }
-        }
-
-        return result;
+        
+        // Step 5: Return the result with the correct sign
+        return result * sign;
     }
 };
 
-// Driver Code
+// Driver function
 int main() {
     Solution sol;
-    vector<int> nums1 = {2, 3, 4, 6};
-    cout << sol.tupleSameProduct(nums1) << endl;  // Output: 8
-
-    vector<int> nums2 = {1, 2, 4, 5, 10};
-    cout << sol.tupleSameProduct(nums2) << endl;  // Output: 16
-
+    cout << sol.myAtoi("42") << endl;            // Output: 42
+    cout << sol.myAtoi(" -042") << endl;         // Output: -42
+    cout << sol.myAtoi("1337c0d3") << endl;      // Output: 1337
+    cout << sol.myAtoi("0-1") << endl;           // Output: 0
+    cout << sol.myAtoi("words and 987") << endl; // Output: 0
+    
     return 0;
 }
